@@ -2,6 +2,7 @@ package com.shravya.bankingapp.config;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
@@ -10,13 +11,12 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    // 🛡️ 64-character key to ensure it's well over the 256-bit requirement
-    private final String MY_SECRET = "fortis_trust_secure_banking_application_secret_key_2026_full_version";
+
+    @Value("${app.jwt.secret}")
+    private String mySecret;
 
     private Key getSignKey() {
-        // This method is used by BOTH generateToken and validateToken
-        // Using the same variable ensures the signature always matches.
-        byte[] keyBytes = MY_SECRET.getBytes(StandardCharsets.UTF_8);
+        byte[] keyBytes = mySecret.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
